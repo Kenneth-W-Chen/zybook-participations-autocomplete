@@ -17,6 +17,5 @@ Add the script to your userscript manager. Turn on the script and navigate to th
 
 # To-do
 
-* Add a modal that appears below the button if there is a participation activity that can't be automatically completed (i.e., the new drag and drop activities; potentially activities that require the user to code).
 * Kill the button event handler if the page changes. There might be a bug if the user navigates to a different page while the handler is running
 * Make a minified version?
