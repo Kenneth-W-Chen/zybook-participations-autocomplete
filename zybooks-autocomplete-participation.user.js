@@ -6,7 +6,7 @@
 // @downloadurl   https://github.com/Kenneth-W-Chen/zybook-participations-autocomplete/raw/main/zybooks-autocomplete-participation.user.js
 // @match       https://*.zybooks.com/*
 // @grant       none
-// @version     1.1.0
+// @version     1.1.1
 // @author      Kenneth Chen
 // @description Automatically completes most participation activities for zyBooks
 // @license     MIT
@@ -18,7 +18,8 @@ const dragDropClass = 'custom-content-resource'
 const dragDropNewClass = 'content-tool-content-resource'
 const changeEvt = new CustomEvent('change')
 const config = {childList: true, subtree: true};
-const configTwo = {attribute:true,attributeFilter:['aria-label']};
+const ariaLabelConfig = {attribute:true,attributeFilter:['aria-label']};
+const classConfig = {attribute:true,attributeFilter: ['class']}
 var mutObservers = []
 function removeFromArray(element, array){
     array.splice(mutObservers.indexOf(element),1)
@@ -205,8 +206,30 @@ function createButton() {
                                             }
                                         })
                                         mutObservers.push(temp2)
-                                        temp2.observe(addedNode,configTwo)
+                                        temp2.observe(addedNode,ariaLabelConfig)
                                         break;
+                                    }
+                                    else{
+                                        let button = addedNode.querySelector('div')
+                                        if(button!==null&&(button.classList.contains('play-button')||button.classList.contains('pause-button'))){
+                                            console.log('a')
+                                            let temp2 = new MutationObserver((mutations1,observer1)=>{
+                                                if(mutations1[0].target.classList.contains('play-button')){
+                                                    console.log('b')
+                                                    if(mutations1[0].target.classList.contains('rotate-180')){
+                                                        console.log('c')
+                                                        removeFromArray(observer1,mutObservers)
+                                                        resolve()
+                                                        observer1.disconnect()
+                                                    }
+                                                    console.log('d')
+                                                    mutations1[0].target.parentNode.click()
+                                                }
+                                            })
+                                            mutObservers.push(temp2)
+                                            temp2.observe(button,classConfig)
+                                            break;
+                                        }
                                     }
                                 }
                             }
