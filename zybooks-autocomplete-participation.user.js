@@ -26,6 +26,7 @@ let containerObserver = null;
 let contentObserver = null
 let killed = false
 let resolves = []
+let modal = null
 
 function removeFromArray(element, array) {
     array.splice(mutObservers.indexOf(element), 1)
@@ -137,7 +138,7 @@ function createButton() {
     let div = document.createElement('DIV')
     let btn = document.createElement('BUTTON')
     let spn = document.createElement('SPAN')
-    let modal = document.createElement('DIV')
+    modal = document.createElement('DIV')
     let modalText = document.createElement('P')
     let modalClose = document.createElement('i')
     {
@@ -370,6 +371,7 @@ function attachListeners() {
         })
         resolves = []
         mutObservers = []
+        modal.style.visibility = 'hidden'
     }
 
     contentObserver = new MutationObserver((m) => {
