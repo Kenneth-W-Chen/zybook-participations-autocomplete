@@ -7,7 +7,7 @@
 // @updateurl     https://github.com/Kenneth-W-Chen/zybook-participations-autocomplete/raw/main/zybooks-autocomplete-participation.user.js
 // @match       https://*.zybooks.com/*
 // @grant       none
-// @version     1.2.0
+// @version     1.2.1
 // @author      Kenneth Chen
 // @description Automatically completes most participation activities for zyBooks
 // @license     MIT
@@ -17,6 +17,7 @@ const animClass = 'animation-player-content-resource';
 const saqClass = 'short-answer-content-resource';
 const dragDropClass = 'custom-content-resource'
 const dragDropNewClass = 'content-tool-content-resource'
+const ignoreClasses = ['activity-type-info-container','activity-list']
 const changeEvt = new CustomEvent('change')
 const config = {childList: true, subtree: true};
 const ariaLabelConfig = {attribute: true, attributeFilter: ['aria-label']};
@@ -182,7 +183,7 @@ function createButton() {
             let errCount = {1: 0, 2: 0}
             let ran = false
             activities.forEach((activity) => {
-                if (activity.querySelector('.check[aria-label*="Activity completed"]') !== null) {
+                if (activity.querySelector('.check[aria-label*="Activity completed"]') !== null || ignoreClasses.some((c)=>activity.classList.contains(c))) {
                     return
                 }
                 ran = true
